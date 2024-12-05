@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Transaction(models.Model):
-    id = models.CharField(max_length=100)
+    id = models.CharField(max_length=100, primary_key=True)
     appid = models.CharField(max_length=100)
     state = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
