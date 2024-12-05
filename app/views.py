@@ -23,7 +23,7 @@ def pay(request: HttpRequest):
             appid = int(appid)
         except:
             appid = 0
-        res = requests.post(url=url1, data={ "id": appid })
+        res = requests.post(url=url1, json={ "id": appid })
         print("DB::: ", res.text)
         if res.json().get("status") == "success":
             return Response({
@@ -74,7 +74,7 @@ def pay(request: HttpRequest):
             appid = int(appid)
         except:
             appid = appid
-        res = requests.post(url=url2, data={ "id": appid })
+        res = requests.post(url=url2, json={ "id": appid })
         print("DB::: ", res.text)
         return Response({
             "result": {
