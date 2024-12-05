@@ -17,13 +17,14 @@ def pay(request: HttpRequest):
     body = json.loads(body)
 
     if body.get("method") == "CheckPerformTransaction":
-        print("Tekshiruvda...")
+        print("LOG:::Tekshiruvda...")
         appid = body.get("params").get("account").get("appid")
         try:
             appid = int(appid)
         except:
             appid = 0
         res = requests.post(url=url1, data={ "id": appid })
+        print("DB::: ", res.text)
         if res.json().get("status") == "success":
             return Response({
                 "jsonrpc": "2.0",
@@ -50,7 +51,7 @@ def pay(request: HttpRequest):
             })
         
     if body.get("method") == "CreateTransaction":
-        print("Yaratildi...")
+        print("LOG:::Yaratildi...")
         Transaction.objects.create(
             id=body.get("params").get("id"),
             appid=body.get("params").get("account").get("appid"),
@@ -64,7 +65,7 @@ def pay(request: HttpRequest):
             }
         })
     if body.get("method") == "PerformTransaction":
-        print("To'landi...")
+        print("LOG:::To'landi...")
         transaction = Transaction.objects.get(id=body.get("params").get("id"))
         transaction.state = "2"
         transaction.save()
@@ -74,6 +75,7 @@ def pay(request: HttpRequest):
         except:
             appid = appid
         res = requests.post(url=url2, data={ "id": appid })
+        print("DB::: ", res.text)
         return Response({
             "result": {
                 "transaction" : body.get("params").get("id"),
@@ -82,7 +84,7 @@ def pay(request: HttpRequest):
             }
         })
     if body.get("method") == "CancelTransaction":
-        print("Bekor qilindi...")
+        print("LOG:::Bekor qilindi...")
         return Response({
             "result" : {
                 "transaction" : body.get("params").get("id"),
