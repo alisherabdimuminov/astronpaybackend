@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Transaction
+
+
+@admin.register(Transaction)
+class TransactionModelAdmin(admin.ModelAdmin):
+    list_display = ["id", "appid", "state", "created"]
+
