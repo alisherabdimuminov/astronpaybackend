@@ -34,7 +34,7 @@ def pay(request: HttpRequest):
                     "additional": {
                         "id": appid,
                         "name": "Astron foydalanuvchisi",
-                        "balance": res.json().get("balance"),
+                        "balance": res.json().get("balance") or 0,
                     }
                 }
             })
@@ -75,7 +75,7 @@ def pay(request: HttpRequest):
             appid = int(appid)
         except:
             appid = appid
-        res = requests.post(url=url1, json={ "id": appid, "amount": float(transaction.amount) })
+        res = requests.post(url=url1, json={ "id": appid, "amount": float(transaction.amount) / 100 })
         print("DB::: ", res.text)
         return Response({
             "result": {
