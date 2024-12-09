@@ -25,7 +25,7 @@ def pay(request: HttpRequest):
             appid = 0
         res = requests.post(url=url1, json={ "id": appid })
         print("DB::: ", res.text)
-        if res.json().get("status") == "success":
+        if res.json().get("status") == "exists":
             return Response({
                 "jsonrpc": "2.0",
                 "id": appid,
