@@ -11,8 +11,8 @@ from .models import Transaction
 @api_view(http_method_names=["POST"])
 def pay(request: HttpRequest):
     appid = 0
-    url1 = "https://astrontest.uz/mypage/api/userid.php"
-    url2 = "https://astrontest.uz/mypage/api/payment.php"
+    url1 = "https://astrontest.uz/mypage/api/payment2.php"
+    # url2 = "https://astrontest.uz/mypage/api/payment.php"
     body = request.body.decode()
     body = json.loads(body)
 
@@ -32,9 +32,9 @@ def pay(request: HttpRequest):
                 "result": {
                     "allow": True,
                     "additional": {
-                        "id": 1,
-                        "name": "Alisher",
-                        "balance": 1000,
+                        "id": appid,
+                        "name": "Astron foydalanuvchisi",
+                        "balance": res.json().get("balance"),
                     }
                 }
             })
@@ -55,7 +55,8 @@ def pay(request: HttpRequest):
         Transaction.objects.create(
             id=body.get("params").get("id"),
             appid=body.get("params").get("account").get("appid"),
-            state="1"
+            state="1",
+            amount=body.get("params").get("amount")
         )
         return Response({
             "result": {
@@ -74,7 +75,7 @@ def pay(request: HttpRequest):
             appid = int(appid)
         except:
             appid = appid
-        res = requests.post(url=url2, json={ "id": appid })
+        res = requests.post(url=url1, json={ "id": appid, "amount": float(transaction.amount) })
         print("DB::: ", res.text)
         return Response({
             "result": {
